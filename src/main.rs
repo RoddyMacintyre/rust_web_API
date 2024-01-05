@@ -99,6 +99,12 @@ fn not_found() -> Value{
     json!("Not found!")
 }
 
+// Error catcher for unauthorized
+#[catch(401)]
+fn unauthorized() -> Value{
+    json!("Invalid/Missing authorization")
+}
+
 #[rocket::main]     // Rocket main function
 async fn main() {
     let _ = rocket::build()             // Build the rocket framework
@@ -111,7 +117,8 @@ async fn main() {
             delete_exchange
         ])     // Mount the routes to the build
         .register("/", catchers![   // Register the catchers to the mounted endpoints
-            not_found
+            not_found,
+            unauthorized    // Register the 401 unauthorized func
         ])
         .launch()
         .await;
