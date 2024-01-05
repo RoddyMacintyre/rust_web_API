@@ -51,7 +51,10 @@ impl<'r> FromRequest<'r> for BasicAuth{
 
         if let Some(auth_header) = auth_header{
             if let Some(auth) = Self::from_authorization_header(auth_header){
-                return Outcome::Success(auth)
+                // Check username & password here
+                if auth.username == String::from("foo") && auth.password == String::from("bar") {
+                    return Outcome::Success(auth)
+                }
             }
         }
 
